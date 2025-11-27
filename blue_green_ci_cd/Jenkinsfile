@@ -1,0 +1,4 @@
+pipeline {
+  agent any
+  /* truncated for brevity in demo */
+}
