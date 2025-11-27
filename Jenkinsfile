@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/your-org/blue-green-ci-cd.git'
+                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/iddhawan01/Micro-service-based-app-blue-green.git'
             }
         }
 
