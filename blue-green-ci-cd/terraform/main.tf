@@ -33,17 +33,17 @@ variable "env" {
 }
 
 # -------------------------
-# Resources
+# Resources — Two EC2 Instances
 # -------------------------
 resource "aws_instance" "docker_server" {
+  count         = 2
   ami           = var.ami_id
   instance_type = var.instance_type
 
   tags = {
-    Name = "${var.env}-docker-server"
+    Name = "${var.env}-docker-server-${count.index == 0 ? "blue" : "green"}"
   }
 
-  # Install Docker automatically
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
@@ -52,17 +52,20 @@ resource "aws_instance" "docker_server" {
       "sudo usermod -a -G docker ec2-user"
     ]
   }
+
+  # Optional: allow SSH access from your IP
+  # Add security group if needed
 }
 
 # -------------------------
 # Outputs
 # -------------------------
-output "docker_server_ip" {
-  description = "Public IP of the Docker server"
-  value       = aws_instance.docker_server.public_ip
+output "docker_server_ips" {
+  description = "Public IPs of the Docker servers (Blue and Green)"
+  value       = [for instance in aws_instance.docker_server : instance.public_ip]
 }
 
-output "docker_server_id" {
-  description = "Instance ID of the Docker server"
-  value       = aws_instance.docker_server.id
+output "docker_server_ids" {
+  description = "Instance IDs of the Docker servers"
+  value       = [for instance in aws_instance.docker_server : instance.id]
 }
