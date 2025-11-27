@@ -8,18 +8,17 @@ pipeline {
             }
         }
 
-        stage('Build & Push Docker Images') {
+        stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker build -t myrepo/service1:${env.BRANCH_NAME} ./service1'
-                    sh 'docker build -t myrepo/service2:${env.BRANCH_NAME} ./service2'
-                    sh 'docker build -t myrepo/service3:${env.BRANCH_NAME} ./service3'
-                    sh 'docker push myrepo/service1:${env.BRANCH_NAME}'
-                    sh 'docker push myrepo/service2:${env.BRANCH_NAME}'
-                    sh 'docker push myrepo/service3:${env.BRANCH_NAME}'
-                }
-            }
+                    sh '''#!/bin/bash
+                    docker build -t myrepo/service1:${BRANCH_NAME} ./service1
+                    docker build -t myrepo/service2:${BRANCH_NAME} ./service2
+                    docker build -t myrepo/service3:${BRANCH_NAME} ./service3
+                    '''
         }
+    }
+}
 
         stage('Provision Infra with Terraform') {
             steps {
