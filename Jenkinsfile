@@ -12,9 +12,9 @@ pipeline {
             steps {
                 script {
                     sh '''#!/bin/bash
-                    docker build -t myrepo/service1:${BRANCH_NAME} ./service1
-                    docker build -t myrepo/service2:${BRANCH_NAME} ./service2
-                    docker build -t myrepo/service3:${BRANCH_NAME} ./service3
+                    docker build -t myrepo/service1:${BRANCH_NAME} ./service-1
+                    docker build -t myrepo/service2:${BRANCH_NAME} ./service-2
+                    docker build -t myrepo/service3:${BRANCH_NAME} ./service-3
                     '''
         }
     }
